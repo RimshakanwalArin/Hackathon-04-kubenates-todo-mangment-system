@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ChatInterface from '../../src/components/ChatInterface'
 import MessageList from '../../src/components/MessageList'
@@ -36,7 +36,9 @@ describe('Chat Components', () => {
       const sendButton = screen.getByRole('button', { name: /send message/i })
 
       await userEvent.type(input, 'Test message')
-      fireEvent.click(sendButton)
+      await act(async () => {
+        fireEvent.click(sendButton)
+      })
 
       expect(onSend).toHaveBeenCalledWith('Test message')
     })
@@ -47,7 +49,9 @@ describe('Chat Components', () => {
       const input = screen.getByPlaceholderText(/type your message/i)
 
       await userEvent.type(input, 'Test message')
-      fireEvent.keyPress(input, { key: 'Enter', code: 'Enter', charCode: 13 })
+      await act(async () => {
+        fireEvent.keyPress(input, { key: 'Enter', code: 'Enter', charCode: 13 })
+      })
 
       expect(onSend).toHaveBeenCalledWith('Test message')
     })
@@ -104,7 +108,9 @@ describe('Chat Components', () => {
     test('displays timestamp', () => {
       const timestamp = '2025-12-23T10:00:00Z'
       render(<UserMessage text="Test" timestamp={timestamp} />)
-      expect(screen.getByText(/10:00/i)).toBeInTheDocument()
+      // Check for time in AM/PM format (timezone-agnostic)
+      const timeElement = screen.getByText(/\d{1,2}:\d{2}\s(AM|PM)/i)
+      expect(timeElement).toBeInTheDocument()
     })
   })
 

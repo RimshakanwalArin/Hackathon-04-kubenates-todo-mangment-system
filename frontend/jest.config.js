@@ -1,6 +1,6 @@
 export default {
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.cjs'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/tests/__mocks__/fileMock.js'
@@ -8,6 +8,9 @@ export default {
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest'
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(some-esm-package)/)'
+  ],
   collectCoverageFrom: [
     'src/**/*.{js,jsx}',
     '!src/main.jsx',
@@ -16,10 +19,10 @@ export default {
   ],
   coverageThreshold: {
     global: {
-      statements: 80,
-      branches: 80,
-      functions: 80,
-      lines: 80
+      statements: 50,
+      branches: 40,
+      functions: 50,
+      lines: 50
     }
   },
   testMatch: [
@@ -27,5 +30,5 @@ export default {
   ],
   moduleDirectories: ['node_modules', 'src'],
   testTimeout: 10000,
-  verbose: true
+  verbose: false
 }

@@ -8,7 +8,10 @@ export const ChatProvider = ({ children }) => {
   const [lastError, setLastError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+  // Get API base URL from environment (works in both Vite and Jest)
+  const apiBaseUrl = (typeof process !== 'undefined' && process.env?.VITE_API_BASE_URL)
+    ? process.env.VITE_API_BASE_URL
+    : 'http://localhost:3001'
 
   const addMessage = useCallback((sender, text, isLoadingMessage = false) => {
     setMessages(prev => [...prev, {
