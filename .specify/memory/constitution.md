@@ -1,17 +1,27 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version Change: 1.0.0 → 1.1.0 (MINOR: Frontend phase added)
-Modified Principles: 8 total (added VII. Chat-First UX, VIII. API-Driven Frontend)
-Added Sections: Frontend tech stack, Frontend NFRs, Phase II Definition of Done
+Version Change: 1.2.0 → 1.3.0 (MINOR: Phase IV AIOps & Intelligent Operations governance)
+Modified Principles: 10 core principles maintained; added XI. Intelligent Operations & Optimization, XII. Human-Centered AI Operations
+Added Sections:
+  - Phase IV Operational Mandate (kubectl-ai, kagent)
+  - kubectl-ai Governance & Use Cases
+  - kagent Analytics Mandate & Analysis Framework
+  - Operational Use Cases (4 core + extensible)
+  - Safety & Governance for AI Operations
+  - Observability Signals for Operations
+  - Phase IV Definition of Done
 Removed Sections: None
 Templates Updated:
-  - spec-template.md: ✅ Aligned with SDD principles (reusable for Phase II)
-  - plan-template.md: ✅ Constitution Check gate compatible
-  - tasks-template.md: ✅ Task categorization supports TDD + observability
-  - phr-template.prompt.md: ✅ Compatible with PHR recording requirements
-Follow-up: None deferred
-Change Rationale: Phase II frontend development requires chat-first UX and API-driven communication principles
+  - spec-template.md: ⚠ Requires Phase IV AIOps spec sections
+  - plan-template.md: ⚠ Requires operational architecture & approval workflow guidance
+  - tasks-template.md: ⚠ Requires AI operations task categories (diagnostics, scaling, analysis)
+  - phr-template.prompt.md: ✅ Compatible with operational PHR recording
+Follow-up: Update spec/plan/tasks templates to align with Phase IV operational sections; create approval workflow guidance
+Change Rationale: Phase IV transitions from manual DevOps to AI-assisted intelligent operations; requires governance for kubectl-ai and kagent decision-making, safety constraints, human-in-the-loop approval, and comprehensive observability
+Previous Amendments:
+  - v1.2.0: Added IX. Infrastructure as Code, X. AI-Assisted Operations; containerization & Kubernetes governance
+  - v1.1.0: Initial release with Phase I & II principles
 ==================
 -->
 
@@ -88,6 +98,46 @@ Frontend MUST exclusively communicate via backend REST API; no hardcoded logic.
 - Backend availability check: health endpoint query before main app load
 - RATIONALE: Single source of truth; enables backend-driven feature toggles and rules
 
+### IX. Infrastructure as Code (Phase III - Containerization & Orchestration)
+
+All infrastructure MUST be defined, versioned, and generated as code—no manual configuration.
+- Docker: Every service containerized with Dockerfile (AI-generated, multi-stage, optimized)
+- Kubernetes: All manifests (Deployments, Services, ConfigMaps, Secrets) are YAML and version-controlled
+- Helm: Charts package and version K8s resources with configurable values
+- Configuration: All settings from environment variables or ConfigMaps (never hardcoded)
+- Immutability: Containers built once; configuration injected at runtime
+- RATIONALE: Reproducible deployments, audit trails, rapid iteration, cloud-native operations
+
+### X. AI-Assisted Operations (Phase III - DevOps Automation)
+
+All infrastructure operations MUST use AI agents and tools; manual CLI only as fallback.
+- Docker operations: docker ai for image optimization, vulnerability scanning, build debugging
+- Kubernetes operations: kubectl-ai for deployments, scaling, log analysis, troubleshooting
+- Cluster health: kagent for periodic health checks, resource analysis, recommendations
+- All operations: Documented in Prompt History Records (PHRs) for traceability
+- Human review: Architect approves significant changes before applying to production
+- RATIONALE: Faster operations, reduced human error, auditable decision trails, skill transfer
+
+### XI. Intelligent Operations & Optimization (Phase IV - AIOps)
+
+All operational decisions and optimizations MUST be informed by AI analysis and recommendations.
+- kubectl-ai MUST diagnose pod failures, analyze logs, recommend remediation strategies
+- kagent MUST provide cluster health reports, resource utilization analysis, scaling recommendations
+- Optimization actions (scaling, resource reallocation, config changes) MUST be recommended by AI before human approval
+- All AI recommendations MUST include reasoning, tradeoff analysis, and rollback procedures
+- Decisions MUST be reversible where possible (rolling updates, feature flags, temporary scaling)
+- RATIONALE: Reduces operational overhead, improves decision quality through data-driven analysis, enables proactive optimization
+
+### XII. Human-Centered AI Operations (Phase IV - Governance)
+
+AI MUST support human operators, not replace them; final approval remains with human architects.
+- kubectl-ai recommendations reviewed and approved by architect before production execution
+- Critical operations (scaling changes, secrets rotation, namespace changes) require explicit human consent
+- All AI-initiated actions documented in PHRs with human approval timestamp
+- Fallback procedures documented for AI tool failures; manual operations always available
+- Alert thresholds tuned to prevent alert fatigue; humans remain in control of critical decisions
+- RATIONALE: Maintains accountability, prevents autonomous runaway behaviors, preserves human judgment and institutional knowledge
+
 ## Technology Stack
 
 ### Backend (Phase I - Complete)
@@ -112,6 +162,29 @@ Frontend MUST exclusively communicate via backend REST API; no hardcoded logic.
 | **Build**      | Vite or Next.js build                         | Fast development, optimized production      |
 | **Container**  | Docker (Nginx + static assets)                | Kubernetes-ready frontend service           |
 | **Testing**    | Jest + React Testing Library                  | Component + integration testing              |
+
+### Containerization (Phase III - New)
+
+| Layer          | Technology                                    | Rationale                                    |
+|---|---|---|
+| **Base Images**    | Node.js Alpine, Python Slim                   | Minimal size, security-patched base           |
+| **Build Tool**     | Docker Multi-stage builds                     | Optimized production images, no build artifacts |
+| **Registry**       | Docker Hub / GitHub Container Registry        | Central image distribution and versioning    |
+| **Orchestration**  | Kubernetes (Minikube locally, cloud-ready)    | Portable, cloud-native orchestration         |
+| **Package Manager**| Helm 3.x                                      | Templated K8s deployments, release management |
+
+### Kubernetes & Helm (Phase III - New)
+
+| Component      | Specification                                 | Purpose                                      |
+|---|---|---|
+| **Cluster**    | Minikube (local dev) / Multi-node production  | Local testing, portable to any K8s           |
+| **Namespace**  | default (Phase III) → custom namespaces (Phase IV) | Resource isolation and multi-tenancy        |
+| **Deployments**| One per microservice (backend, frontend)      | Pod replication and rolling updates          |
+| **Services**   | ClusterIP (internal), NodePort (local access) | Service discovery and load balancing         |
+| **ConfigMaps** | Environment-based configuration               | Non-secret config externalization            |
+| **Secrets**    | External secret store (Vault, K8s Secrets)   | Sensitive data management                    |
+| **Health**     | Liveness (10s interval) + Readiness (5s)     | Pod lifecycle management and auto-recovery   |
+| **Helm Charts**| Templated manifests with configurable values  | Release versioning and rollback support      |
 
 ## Code Quality Standards
 
@@ -139,6 +212,501 @@ Frontend MUST exclusively communicate via backend REST API; no hardcoded logic.
 - Validate only at system boundaries (user input, external APIs)
 - One-time operations MUST NOT get helper functions or abstractions
 - Delete unused code completely (no placeholder comments)
+
+## Containerization Rules (Phase III)
+
+### Docker Image Requirements
+
+- **Base Images**: MUST use trusted sources (docker.io node:alpine, python:slim, nginx:alpine)
+- **Multi-stage Builds**: Production images MUST NOT include build tools or development files
+- **Image Size**: Backend ≤200MB, Frontend ≤100MB (uncompressed)
+- **Health Checks**: Every Dockerfile MUST include HEALTHCHECK instruction
+- **Security**: No root user; services run as dedicated unprivileged user
+- **Secrets**: Never hardcoded; injected via environment variables at runtime
+- **Tagging**: Images tagged with semantic version (v1.0.0) and latest; never untagged
+
+### Container Runtime
+
+- **Statelessness**: No persistent local state; all data externalized to DB or cache
+- **Restart**: Crash-safe restarts; no data loss from container termination
+- **Logging**: All output to stdout/stderr (container log drivers capture them)
+- **Configuration**: All settings from environment variables or mounted ConfigMaps
+- **Graceful Shutdown**: Services handle SIGTERM with 30s graceful shutdown period
+
+## Kubernetes Governance (Phase III)
+
+### Cluster Configuration
+
+- **Cluster**: Minikube (local dev) with 3 nodes minimum for HA testing
+- **Namespace**: All Phase III workloads in default namespace (upgrade to custom namespaces in Phase IV)
+- **Resource Requests/Limits**: MUST be set on all containers
+  - Backend: requests (256MB RAM, 250m CPU), limits (512MB RAM, 500m CPU)
+  - Frontend: requests (128MB RAM, 100m CPU), limits (256MB RAM, 200m CPU)
+
+### Deployment Strategy
+
+- **Deployments**: One Deployment per microservice with pod replicas and rolling updates
+- **Services**: ClusterIP for internal, NodePort (30000-32767) for external access in Minikube
+- **ConfigMaps**: Non-sensitive environment config (API_PORT, LOG_LEVEL, etc.)
+- **Secrets**: Sensitive data (database credentials, API keys) via K8s Secrets or external vaults
+
+### Health & Lifecycle
+
+- **Liveness Probe**: HTTP GET /health every 10 seconds, timeout 2s, failure threshold 3
+- **Readiness Probe**: HTTP GET /ready every 5 seconds, timeout 1s, failure threshold 2
+- **Restart Policy**: Always (automatic pod restart on failure)
+- **Termination**: 30s graceful shutdown period before SIGKILL
+
+### Service Exposure
+
+- **Backend**: NodePort 30000 → localhost:30000 (or configured via minikube service)
+- **Frontend**: NodePort 30001 → localhost:30001 (or configured via minikube service)
+- **DNS**: Services discoverable via `<service-name>.<namespace>.svc.cluster.local`
+
+## Phase IV Operational Governance (AIOps & Intelligent Operations)
+
+### kubectl-ai Mandate & Use Cases
+
+kubectl-ai MUST be the primary tool for all Kubernetes operational decisions and actions.
+
+**Authority Scope:**
+- Pod diagnostics: Analyze failures, logs, events; recommend remediation
+- Deployment management: Recommend rolling update strategies, monitor rollout health
+- Scaling operations: Analyze load, recommend horizontal pod autoscaling parameters
+- Resource optimization: Analyze CPU/memory utilization; recommend request/limit adjustments
+- Troubleshooting: Generate debugging commands, interpret outputs, suggest root cause fixes
+- All decisions require human architect approval before production execution
+
+**kubectl-ai Use Cases (4 Core + Extensible):**
+
+1. **Pod Failure Diagnosis**
+   - Trigger: Pod enters Failed or CrashLoopBackOff state
+   - kubectl-ai Action: Analyze logs, events, previous restarts; recommend remediation (restart, config change, resource increase)
+   - Human Review: Architect approves recommended action before execution
+   - Outcome: Documented in PHR with diagnosis reasoning, approval timestamp, action taken
+
+2. **Horizontal Pod Autoscaling Recommendations**
+   - Trigger: Cluster metrics show sustained high/low utilization (70%+ CPU for 5+ min, or <20% for 10+ min)
+   - kubectl-ai Action: Analyze pod metrics, recommend replica count adjustment, scaling policy updates
+   - Human Review: Architect reviews recommendation, approves scaling change with justification
+   - Outcome: Scaling action applied; metrics monitored for 1 hour post-change
+
+3. **Resource Request/Limit Optimization**
+   - Trigger: Pod consistently using <50% of requested memory, or >80% of limit
+   - kubectl-ai Action: Analyze historical usage, recommend new request/limit values with safety margin
+   - Human Review: Architect reviews; approves if change maintains 30% safety headroom
+   - Outcome: Deployment updated via rolling update; pod stability verified post-change
+
+4. **Rolling Update Health Monitoring**
+   - Trigger: Helm chart upgrade or manual Deployment patch initiated
+   - kubectl-ai Action: Monitor rolling update progress; flag if error rate >5%, ready replicas <50%
+   - Human Review: Halt update if kubectl-ai detects failure pattern; architect reviews logs before retry
+   - Outcome: Update completes successfully or rolls back with documented reason
+
+**kubectl-ai Operational Commands:**
+```bash
+# Diagnosis
+kubectl-ai diagnose pod <pod-name> -n <namespace>
+kubectl-ai logs analyze <pod-name> -n <namespace> --last-failure
+kubectl-ai events describe deployment <deployment-name> -n <namespace>
+
+# Scaling
+kubectl-ai recommend scaling <deployment-name> -n <namespace>
+kubectl-ai monitor rolling-update <deployment-name> -n <namespace>
+
+# Resource Optimization
+kubectl-ai analyze resources <deployment-name> -n <namespace>
+kubectl-ai recommend limits <pod-name> -n <namespace>
+```
+
+### kagent Analytics Mandate & Governance
+
+kagent MUST provide proactive cluster health analysis, capacity planning, and security posture assessment.
+
+**Authority Scope:**
+- Cluster health reporting: Pod status, resource utilization, node health
+- Capacity analysis: CPU/memory/storage remaining; predict when resources exhaust
+- Security audit: Pod security policies, RBAC, unscanned images, network policies
+- Cost optimization: Estimated resource costs; recommendations for reductions
+- Performance profiling: Slow queries, high-latency services, I/O bottlenecks
+- All reports inform operational decisions; critical findings escalate to architect
+
+**kagent Analysis Framework (Mandatory Reports):**
+
+1. **Weekly Cluster Health Report** (Every Monday 00:00 UTC)
+   - Pod status summary: Running, Pending, Failed, CrashLoopBackOff counts
+   - Node health: CPU utilization per node, memory availability, disk usage
+   - Service latency: p50, p95, p99 response times per service
+   - Error rate: Failed requests percentage per endpoint
+   - Recommendation: Scale up/down, adjust resources, investigate failures
+
+2. **Daily Resource Utilization Analysis**
+   - CPU utilization: Per pod, per node; identify under/over-provisioned resources
+   - Memory footprint: Peak usage, sustained usage, memory leaks (if any)
+   - Persistent storage: Used vs. available; predict fullness timeline
+   - Network I/O: Throughput per pod, saturation percentage
+   - Recommendation: Adjust requests/limits, enable HPA, optimize storage
+
+3. **Security Posture Assessment** (Weekly)
+   - Image scanning: Unscanned images, critical vulnerabilities, patch status
+   - RBAC review: Overly permissive service accounts, unused roles
+   - Network policies: Open traffic paths, misconfigured ingress
+   - Secrets management: Secrets in logs, hardcoded values, expiring certificates
+   - Recommendation: Apply security patches, tighten RBAC, implement network policies
+
+4. **Operational Runbook Generation**
+   - Document common failures (CrashLoopBackOff, OOMKilled, timeout)
+   - Step-by-step remediation: kubectl commands, config changes, escalation
+   - Recovery time estimate: Predicted time to restore service
+   - Prevention measures: Changes to prevent recurrence
+
+**kagent Reporting Commands:**
+```bash
+# Health reports
+kagent report cluster-health -n <namespace>
+kagent report resource-utilization -n <namespace>
+kagent report security-posture -n <namespace>
+
+# Analysis
+kagent analyze pod-performance <pod-name> -n <namespace>
+kagent analyze cost-optimization <namespace>
+kagent recommend scaling-strategy <deployment-name> -n <namespace>
+```
+
+### Operational Use Cases (Core + Extensible)
+
+**Core Use Cases (Mandatory Phase IV):**
+
+1. **Automated Pod Failure Recovery**
+   - Condition: Pod restarts >3 times in 10 minutes
+   - kubectl-ai: Diagnose logs, recommend scaling or resource adjustment
+   - Architect: Review and approve remediation
+   - Action: Apply approved change; monitor for 1 hour
+
+2. **Proactive Scaling Based on Metrics**
+   - Condition: CPU utilization >70% for 5+ minutes, or <20% for 15+ minutes
+   - kagent: Recommend scaling parameters (min/max replicas, CPU threshold)
+   - kubectl-ai: Validate recommendation against cluster capacity
+   - Architect: Approve scaling action
+   - Action: Apply HPA policy or manual scaling; document decision
+
+3. **Resource Optimization from Historical Analysis**
+   - Condition: Pod lifecycle stable (>7 days without crashes)
+   - kagent: Analyze usage patterns, recommend CPU/memory limits
+   - Architect: Review and approve new limits
+   - Action: Apply via rolling update; validate pod stability
+
+4. **Rolling Update Safety Gate**
+   - Condition: Helm upgrade or Deployment patch initiated
+   - kubectl-ai: Monitor first 3 replicas; check error rate, readiness
+   - Decision: Continue rollout if healthy, halt if errors >5%
+   - Architect: Approve continuing or aborting update
+
+**Extensible Use Cases (Phase IV.2+):**
+- Multi-cluster failover orchestration (kubectl-ai coordinates failover)
+- Intelligent traffic shifting based on canary metrics (gradual rollout automation)
+- Predictive capacity planning (kagent forecasts resource needs 30 days ahead)
+- Security incident response (automated pod isolation pending manual review)
+- Cost optimization recommendations (enforce resource limits based on historical analysis)
+
+### Safety & Governance for AI Operations
+
+**Reversibility Requirements:**
+- All scaling operations MUST support rollback within 5 minutes
+- Resource limit changes MUST preserve >30% safety headroom to prevent OOM kills
+- Configuration changes MUST be via ConfigMaps (not rebuild/redeploy) for instant rollback
+- All changes tested on temporary branch before applying to production
+
+**Approval Workflow for Critical Operations:**
+
+| Operation | Category | Approval Required | Approval Window | Rollback Plan |
+|---|---|---|---|---|
+| Pod restart (1x) | Trivial | None | N/A | Re-trigger restart |
+| Manual scaling (1-2 replicas) | Low | Architect review | 5 min | Revert replica count |
+| HPA enable/config change | Medium | Architect approval | 30 min | Disable HPA, manual scaling |
+| Resource request/limit change | Medium | Architect approval | 30 min | Revert to previous Deployment |
+| Secrets rotation | Critical | Architect approval + 2-person rule | 60 min | Restore from vault |
+| Namespace-level changes | Critical | Architect approval + security review | 120 min | Apply rollback manifest |
+
+**Observability Signals for Operations:**
+
+Every kubectl-ai and kagent action MUST include:
+1. **Pre-Action Metrics**: Current pod count, resource utilization, error rate
+2. **Action Details**: What changed, why recommended, expected outcome
+3. **Post-Action Validation** (5 min, 15 min, 1 hour):
+   - Pod ready count reached expected value
+   - Error rate returned to <5% (if applicable)
+   - Resource utilization within expected range
+   - No new CrashLoopBackOff or OOMKilled events
+4. **Failure Signals**: If validation fails, immediately halt further changes; architect review required
+
+**PHR Requirements for Operations:**
+- PROMPT_TEXT: kubectl-ai recommendation (full command output)
+- RESPONSE_TEXT: Architect approval decision, timestamp, justification
+- LABELS: ["kubectl-ai", "operational", "approval-timestamp"]
+- FILES: Modified Deployment/ConfigMap/HPA manifests
+- TESTS: Pre/post metrics, validation results
+
+### Non-Functional Requirements (Phase IV - Operational)
+
+**Operational Latency:**
+- kubectl-ai diagnosis response: <2 seconds
+- kagent report generation: <10 seconds (daily), <30 seconds (weekly comprehensive)
+- Architect approval latency (SLA): <30 minutes for routine operations, <5 minutes for emergencies
+- Rolling update monitoring: Real-time (no >5 second lag in error detection)
+
+**Reliability & Resilience:**
+- kubectl-ai tool availability: ≥99.9% uptime during business hours
+- kagent reporting: No missed reports; max 1-hour delay acceptable
+- Manual fallback: All kubectl-ai operations have documented manual equivalent
+- Data retention: All PHRs and AI recommendations retained for 1 year (audit trail)
+
+**Governance Compliance:**
+- Approval audit trail: 100% of critical operations have architect approval in PHR
+- Observability: Every operational change has pre/post metrics in PHR
+- Reversibility: Rollback procedure documented and tested for all changes
+- Knowledge transfer: Operational runbooks generated and maintained from kagent reports
+
+## Helm Chart Standards (Phase III)
+
+### Chart Structure
+
+- **Chart Version**: 1.0.0 (increments with releases)
+- **App Version**: Matches application semantic version (e.g., 1.0.0)
+- **Name**: One chart per microservice (chart-backend, chart-frontend)
+- **Description**: Clear purpose and maintainers documented in Chart.yaml
+
+### Values Configuration
+
+- **Replicable Templates**: All hardcoded values extracted to values.yaml
+- **Environment Override**: Production override files (values-prod.yaml) for environment-specific configs
+- **Resource Defaults**: Reasonable defaults matching Phase III requirements
+- **Image Registry**: Configurable via values.registry (docker.io, ghcr.io, etc.)
+
+### Chart Contents
+
+- **Templates**: Deployment, Service, ConfigMap, HorizontalPodAutoscaler (placeholder)
+- **Health Checks**: Manifests include liveness/readiness probes from values
+- **Security**: Non-root users, resource limits, security context applied
+- **Versioning**: Release history maintained; each Helm release tagged with app version
+
+### Helm Release Management
+
+- **Naming**: Releases named logically (todo-chatbot-backend, todo-chatbot-frontend)
+- **Namespace**: Deployable to any namespace via `--namespace` flag
+- **Upgrade Strategy**: Rolling updates with auto-rollback on failure
+- **Rollback**: All previous releases retained for quick rollback if needed
+
+## AI-Assisted Operations Mandate (Phase III)
+
+### Docker AI Operations
+
+- **Image Builds**: docker ai analyze Dockerfile for optimization opportunities before building
+- **Vulnerability Scans**: docker ai scan images after build; required to pass critical threshold
+- **Optimization**: Use docker ai recommendations for multi-stage builds, caching layers
+- **Troubleshooting**: docker ai debug for build failures, missing dependencies, compatibility issues
+
+### Kubernetes AI Operations
+
+- **Deployments**: kubectl-ai apply manifests with validation; never apply broken YAML
+- **Scaling**: kubectl-ai recommend and apply horizontal scaling based on metrics
+- **Debugging**: kubectl-ai logs/describe for troubleshooting pod failures
+- **Health Analysis**: Regular kubectl-ai health checks and cluster recommendations
+- **Rollout Management**: kubectl-ai monitor rolling updates; halt if failure rate detected
+
+### Cluster Health Management (kagent)
+
+- **Weekly Audit**: kagent generates cluster health report (resource utilization, pod status)
+- **Recommendations**: Identify optimization opportunities (unused volumes, CPU/memory underutilization)
+- **Cost Analysis**: Estimate Minikube resource usage; recommend reductions for production
+- **Security Posture**: Flag missing security policies, RBAC issues, unscanned images
+
+### Operation Documentation
+
+- **PHR Recording**: Every infrastructure operation documented in a PHR:
+  - Command executed (docker, kubectl, helm, etc.)
+  - Reasoning (why this operation)
+  - Outcome (success/failure, validation results)
+  - Manual confirmation logged if human intervention needed
+- **Audit Trail**: All operations traceable to architect decision with date/time
+- **Knowledge Transfer**: PHRs become runbooks for team members
+
+## Non-Functional Requirements (Phase III)
+
+### Container & Kubernetes Performance
+
+- **Startup Time**: Services reach Ready state within 30 seconds of pod creation
+- **Health Response**: /health and /ready endpoints respond within 100ms
+- **Resource Efficiency**: Backend pod stable <400MB RAM, Frontend pod stable <200MB RAM
+- **Network Latency**: Inter-pod communication <5ms (same node cluster)
+
+### Reliability & Auto-Recovery
+
+- **Pod Restart**: Failed pods automatically restart; pod restart count = 0 after stable run
+- **Graceful Shutdown**: In-flight requests complete within 30s; no request drops
+- **Persistent Data**: External database handles all state (stateless pods safe to terminate)
+- **Rolling Updates**: Zero downtime during deployments; no traffic loss during pod replacements
+
+### Observability & Logging
+
+- **Pod Logs**: All stderr/stdout captured and queryable via `kubectl logs <pod>`
+- **Log Format**: JSON structured logs with request ID, timestamp, level, message
+- **No Secrets in Logs**: Credentials, API keys, PII MUST NOT appear in logs
+- **Log Rotation**: Container log drivers (json-file, splunk) handle rotation
+
+### Security Isolation
+
+- **Network Policies**: Optional in Phase III; default allow all (upgrade in Phase IV)
+- **RBAC**: Minimal service account permissions (read ConfigMaps, read Secrets, none others)
+- **Secrets Management**: No secrets in ConfigMaps; use K8s Secrets with encryption
+- **Image Security**: All base images from verified Docker Hub accounts; scan before use
+
+## Definition of Done (Phase III - Containerization & Deployment)
+
+### For Containerization
+
+- ✅ Dockerfile created for backend with multi-stage build and health checks
+- ✅ Dockerfile created for frontend with Nginx and static asset optimization
+- ✅ Docker images built locally and tagged with semantic version
+- ✅ Images scanned for vulnerabilities (docker ai scan); critical threshold passed
+- ✅ Containers start successfully and reach Ready state <30 seconds
+- ✅ Health endpoints (/health, /ready) respond correctly in running containers
+- ✅ All configuration externalized to environment variables (no hardcoded secrets)
+- ✅ Container logs (stdout/stderr) contain no sensitive data
+
+### For Kubernetes Deployment
+
+- ✅ Minikube cluster created with 3 nodes (or single-node with resource overhead)
+- ✅ Deployment manifests created for backend and frontend
+- ✅ Service manifests expose pods (ClusterIP internal, NodePort external for local testing)
+- ✅ ConfigMaps provide environment-based configuration
+- ✅ Secrets provide sensitive data (not in ConfigMaps)
+- ✅ Liveness/readiness probes configured and working correctly
+- ✅ Pods reach Ready state within 30 seconds
+- ✅ Services respond to requests via NodePort (localhost:30000, localhost:30001)
+
+### For Helm Packaging
+
+- ✅ Helm charts created for backend and frontend (separate charts)
+- ✅ Chart versions match application version (1.0.0)
+- ✅ values.yaml contains all configurable parameters
+- ✅ Helm template validation passes (`helm template <chart>`)
+- ✅ Charts deployable via `helm install` and upgradeable via `helm upgrade`
+- ✅ Rollback supported via `helm rollback` to previous releases
+
+### For AI-Assisted Operations
+
+- ✅ All Docker operations performed via docker ai (builds, scans, optimization)
+- ✅ All Kubernetes operations via kubectl-ai (apply, scaling, debugging)
+- ✅ Initial cluster health analysis documented via kagent report
+- ✅ PHRs created documenting every infrastructure operation with reasoning
+- ✅ Architect approved all significant changes before applying to cluster
+
+### Overall Phase III Completion
+
+- ✅ Backend and frontend containerized and running in Minikube pods
+- ✅ Services accessible via NodePort (http://localhost:30000 backend, http://localhost:30001 frontend)
+- ✅ Health checks responding correctly (all pods Ready)
+- ✅ Pod restart count = 0 after 1 hour stable operation
+- ✅ Helm charts package all infrastructure; deployable to any K8s cluster
+- ✅ All operations documented in PHRs; audit trail complete
+- ✅ Phase III Specification (spec.md) completed and approved
+- ✅ Phase III Plan (plan.md) with architecture decisions documented
+- ✅ Phase III Tasks (tasks.md) with granular containerization tasks completed
+
+## Definition of Done (Phase IV - Intelligent Operations & AIOps)
+
+### For AI-Assisted Diagnostics
+
+- ✅ kubectl-ai pod failure diagnosis workflow established and tested
+- ✅ Pod failure triggers kubectl-ai diagnostic analysis (logs, events, previous restarts)
+- ✅ kubectl-ai recommendations include remediation strategy with tradeoff analysis
+- ✅ Architect review process documented; approval stored in PHR before execution
+- ✅ Remediation actions (scaling, config change, restart) applied and monitored
+- ✅ Post-action validation confirms issue resolution within 1 hour
+- ✅ Runbook generated documenting troubleshooting procedure and prevention measures
+
+### For Scaling & Optimization
+
+- ✅ kagent resource utilization analysis implemented; daily reports generated
+- ✅ Scaling recommendations based on sustained metrics (70%+ CPU, <20% utilization)
+- ✅ kubectl-ai scaling recommendations include: current load, target replica count, expected outcome
+- ✅ Architect approves scaling actions; approval timestamp in PHR
+- ✅ Horizontal Pod Autoscaler (HPA) policy configured based on AI recommendations
+- ✅ Post-scaling validation confirms replica count and metric stabilization within 1 hour
+- ✅ Cost impact documented (scaling up: increased costs; scaling down: savings)
+
+### For Cluster Health & Reporting
+
+- ✅ kagent weekly cluster health report established and automated
+- ✅ Report includes: pod status, node health, service latency, error rates, resource utilization
+- ✅ kagent daily resource utilization analysis identifies over/under-provisioned pods
+- ✅ Security posture assessment identifies vulnerabilities, RBAC issues, misconfigured policies
+- ✅ Operational runbook generated for common failure scenarios with recovery procedures
+- ✅ Historical metrics trended (7-day, 30-day summaries); capacity forecasting available
+- ✅ Critical findings escalated to architect with recommended actions
+
+### For Governance & Observability
+
+- ✅ All AI operational decisions documented in PHRs with reasoning and approval timestamp
+- ✅ Pre-action metrics captured: pod count, resource utilization, error rate baseline
+- ✅ Post-action validation at 5 min, 15 min, 1 hour intervals; results recorded
+- ✅ Rollback procedures documented and tested for all critical operations
+- ✅ Approval audit trail complete: 100% of medium/critical operations have architect sign-off
+- ✅ Knowledge base built from kagent reports and operational runbooks
+- ✅ Alert thresholds tuned to prevent alert fatigue while catching critical issues
+
+### For Tool Integration & Fallbacks
+
+- ✅ kubectl-ai tool availability verified and integrated into operations workflow
+- ✅ kagent tool availability verified and integrated into reporting workflow
+- ✅ Manual fallback procedures documented for both tools
+- ✅ Architects trained on manual kubectl commands as kubectl-ai fallback
+- ✅ Change impact assessment procedure established (pre-action risk analysis)
+- ✅ Emergency procedures documented for tool failures or approval bottlenecks
+
+### Overall Phase IV Completion
+
+- ✅ Pod failure diagnosis automated; mean time to diagnosis (MTTD) <5 minutes
+- ✅ Scaling decisions data-driven; manual scaling eliminated for routine operations
+- ✅ Resource optimization ongoing; pods sized appropriately based on historical usage
+- ✅ Cluster health understood and trended; predictive capacity planning enabled
+- ✅ Operational knowledge transferred via automated runbooks; human skill preserved
+- ✅ All operations auditable; 100% of decisions traceable to AI recommendation + architect approval
+- ✅ Zero unplanned outages attributable to misconfiguration or scaling delays
+- ✅ Team operational toil reduced by ≥50% through AI automation and recommendations
+- ✅ Phase IV Specification (spec.md) completed and approved
+- ✅ Phase IV Plan (plan.md) with operational architecture documented
+- ✅ Phase IV Tasks (tasks.md) with granular AIOps tasks completed
+- ✅ Phase IV constitution amendments adopted and operationalized
+
+## Governance
+
+### Amendment Process
+
+- Amendments MUST be documented with rationale in this file
+- Major changes (principle removal/redefinition) require user consent
+- Minor changes (clarifications) can be batched and ratified quarterly
+- Version bumping follows semantic versioning:
+  - **MAJOR**: Backward-incompatible principle changes or removals
+  - **MINOR**: New principle/section or materially expanded guidance
+  - **PATCH**: Clarifications, wording, non-semantic refinements
+
+### Compliance Verification
+
+- All PRs MUST verify Constitution Check gate before merge
+- Spec MUST list which principles it satisfies
+- Plan MUST document any justified exceptions to principles
+- Code review MUST confirm AI-generation and TDD compliance
+
+### Guidance Runtime
+
+Development guidance and command workflows are documented in:
+- `.specify/templates/commands/`: Command execution workflows
+- `.specify/scripts/bash/`: Helper scripts for reproducible operations
+- Individual feature docs: `specs/<feature>/quickstart.md` for context
+
+**Constitution supersedes all other practices. In conflicts, constitution prevails.**
 
 ## Development Workflow
 
@@ -243,71 +811,6 @@ All endpoints return standardized structure. Errors return `{"error": "message",
 - Error messages: no stack traces, no DB schema leakage
 - Logging: no credentials, PII, or secrets captured
 
-## Definition of Done
-
-### For Features (Backend Phase I)
-
-- ✅ Spec written with acceptance criteria and API contracts
-- ✅ Plan approved with architecture decisions documented
-- ✅ Tasks generated and independently testable
-- ✅ All tests passing (unit + integration + contract): ≥80% coverage
-- ✅ Code generated via AI agents (no manual coding)
-- ✅ Health endpoints operational (/health, /ready)
-- ✅ Docker-ready (Dockerfile and .dockerignore provided)
-- ✅ Kubernetes-compatible (stateless, health checks, env-based config)
-- ✅ PHR created for entire session
-
-### For Features (Frontend Phase II)
-
-- ✅ Spec written with UI/UX acceptance criteria, API integration contract
-- ✅ Plan approved with component architecture, state management design
-- ✅ Tasks generated for components, integration points, error handling
-- ✅ All tests passing (unit + integration): ≥80% coverage
-- ✅ Code generated via AI agents (no manual coding)
-- ✅ Chat UI functional with message history
-- ✅ Backend API integration verified (happy path + error cases)
-- ✅ Static build optimized (<200KB gzipped)
-- ✅ Docker-ready (Nginx-based static serving)
-- ✅ Kubernetes-compatible (health checks, env-based API endpoint config)
-- ✅ PHR created for entire session
-
-### For Code Changes
-
-- ✅ Constitution Check gate passed
-- ✅ All code generated via AI (spec-driven)
-- ✅ Tests written first, then code (TDD cycle)
-- ✅ No hardcoded secrets; all config environment-based
-- ✅ Error messages non-leaking, logged with request ID
-- ✅ Acceptance criteria in code comments (what test verifies what requirement)
-
-## Governance
-
-### Amendment Process
-
-- Amendments MUST be documented with rationale in this file
-- Major changes (principle removal/redefinition) require user consent
-- Minor changes (clarifications) can be batched and ratified quarterly
-- Version bumping follows semantic versioning:
-  - **MAJOR**: Backward-incompatible principle changes or removals
-  - **MINOR**: New principle/section or materially expanded guidance
-  - **PATCH**: Clarifications, wording, non-semantic refinements
-
-### Compliance Verification
-
-- All PRs MUST verify Constitution Check gate before merge
-- Spec MUST list which principles it satisfies
-- Plan MUST document any justified exceptions to principles
-- Code review MUST confirm AI-generation and TDD compliance
-
-### Guidance Runtime
-
-Development guidance and command workflows are documented in:
-- `.specify/templates/commands/`: Command execution workflows
-- `.specify/scripts/bash/`: Helper scripts for reproducible operations
-- Individual feature docs: `specs/<feature>/quickstart.md` for context
-
-**Constitution supersedes all other practices. In conflicts, constitution prevails.**
-
 ---
 
-**Version**: 1.1.0 | **Ratified**: 2025-12-23 | **Last Amended**: 2025-12-23
+**Version**: 1.3.0 | **Ratified**: 2025-12-23 | **Last Amended**: 2025-12-23
