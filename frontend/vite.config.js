@@ -4,9 +4,16 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
+    port: 3001,
     open: true,
-    cors: true
+    cors: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path
+      }
+    }
   },
   build: {
     target: 'es2020',
@@ -26,7 +33,7 @@ export default defineConfig({
     }
   },
   preview: {
-    port: 3000,
+    port: 3001,
     open: true
   }
 })
