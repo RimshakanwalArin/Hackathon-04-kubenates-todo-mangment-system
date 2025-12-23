@@ -4,8 +4,8 @@ import MessageList from './MessageList'
 import MessageInput from './MessageInput'
 import ErrorMessage from './ErrorMessage'
 import WelcomeMessage from './WelcomeMessage'
-import { parseChatResponse, handleChatError } from '../utils/message-formatter'
-import { getErrorMessage } from '../utils/error-handlers'
+import { parseChatResponse } from '../utils/message-formatter'
+import { getErrorMessage, handleChatError } from '../utils/error-handlers'
 
 const ChatInterface = ({ apiClient }) => {
   const { messages, isLoading, setIsLoading, addMessage, lastError, setError, clearError, isConnected } = useChat()
@@ -52,6 +52,13 @@ const ChatInterface = ({ apiClient }) => {
 
   return (
     <div className="chat-container">
+      <div className="chat-header">
+        <div className="chat-title">
+          <span className="chat-title-emoji">🤖</span>
+          <span>Todo Chatbot</span>
+        </div>
+      </div>
+
       {messages.length === 0 && !isConnected && (
         <WelcomeMessage />
       )}
@@ -77,9 +84,9 @@ const ChatInterface = ({ apiClient }) => {
       {!isConnected && messages.length > 0 && (
         <div className="error-message mx-4 mb-4">
           <span className="error-icon">🔌</span>
-          <div>
-            <p className="font-semibold">Backend Unavailable</p>
-            <p>Cannot send messages. Please check your connection.</p>
+          <div className="error-content">
+            <p className="error-title">Backend Unavailable</p>
+            <p className="error-text">Cannot send messages. Please check your connection.</p>
           </div>
         </div>
       )}

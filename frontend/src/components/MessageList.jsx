@@ -22,7 +22,7 @@ const MessageList = ({ messages = [] }) => {
       aria-live="polite"
     >
       {messages.map((message) => (
-        <div key={message.id} className="message-item">
+        <div key={message.id} className="animate-slide-up">
           {message.sender === 'user' ? (
             <UserMessage text={message.text} timestamp={message.timestamp} />
           ) : (

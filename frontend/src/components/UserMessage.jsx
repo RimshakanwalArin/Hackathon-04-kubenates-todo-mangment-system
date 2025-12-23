@@ -9,11 +9,16 @@ const UserMessage = ({ text, timestamp }) => {
   }
 
   return (
-    <div className="message-content user-message">
-      <p className="text-sm">{text}</p>
-      {timestamp && (
-        <p className="text-xs mt-1 opacity-75">{formatTime(timestamp)}</p>
-      )}
+    <div className="flex gap-3 flex-row-reverse">
+      <div className="message-avatar user">👤</div>
+      <div>
+        <div className="message-bubble user-message">
+          <p className="text-sm">{text}</p>
+          {timestamp && (
+            <p className="message-timestamp text-white/70">{formatTime(timestamp)}</p>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

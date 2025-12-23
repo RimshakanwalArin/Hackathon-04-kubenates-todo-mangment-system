@@ -38,7 +38,7 @@ const MessageInput = ({ onSend, isLoading = false, isDisabled = false }) => {
 
   return (
     <div className="message-input-container">
-      <div className="flex gap-2">
+      <div className="input-group">
         <textarea
           ref={textareaRef}
           value={message}
@@ -56,16 +56,23 @@ const MessageInput = ({ onSend, isLoading = false, isDisabled = false }) => {
           disabled={!message.trim() || isLoading || isDisabled}
           className="send-button"
           aria-label="Send message"
+          title="Send message"
         >
           {isLoading ? (
-            <span className="animate-spin">⟳</span>
+            <>
+              <span className="animate-spin inline-block">⟳</span>
+              <span className="hidden sm:inline">Sending</span>
+            </>
           ) : (
-            '→'
+            <>
+              <span>Send</span>
+              <span>✓</span>
+            </>
           )}
         </button>
       </div>
-      <div className="text-xs text-gray-500 mt-1">
-        {message.length}/500
+      <div className="text-xs text-gray-400 mt-2 text-right">
+        {message.length}/500 characters
       </div>
     </div>
   )

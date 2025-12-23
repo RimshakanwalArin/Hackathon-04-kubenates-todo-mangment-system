@@ -8,105 +8,286 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gradient-chat-bg text-gray-900 min-h-screen;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   button {
-    @apply font-medium transition-colors;
+    @apply font-medium transition-all duration-200;
   }
 
-  input {
-    @apply transition-colors;
+  input, textarea {
+    @apply transition-all duration-200;
   }
 }
 
 @layer components {
+  /* Chat Container */
   .chat-container {
-    @apply flex flex-col h-full bg-white rounded-lg shadow-lg overflow-hidden;
+    @apply flex flex-col h-full bg-white/80 backdrop-blur-md rounded-2xl shadow-glass overflow-hidden border border-white/30;
   }
 
+  /* Header */
+  .chat-header {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent p-6 text-white shadow-lg;
+  }
+
+  .chat-title {
+    @apply text-2xl font-bold flex items-center gap-3;
+  }
+
+  .chat-title-emoji {
+    @apply text-3xl animate-bounce-slow;
+  }
+
+  /* Message List */
   .message-list {
-    @apply flex-1 overflow-y-auto p-4 space-y-4;
+    @apply flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hidden;
   }
 
   .message-item {
-    @apply flex gap-3 animate-fadeIn;
+    @apply flex gap-3 animate-slide-up;
   }
 
+  .message-item.user {
+    @apply flex-row-reverse;
+  }
+
+  /* Avatar */
+  .message-avatar {
+    @apply w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0;
+  }
+
+  .message-avatar.bot {
+    @apply bg-gradient-primary text-white;
+  }
+
+  .message-avatar.user {
+    @apply bg-gradient-to-br from-indigo-400 to-purple-500 text-white;
+  }
+
+  /* Message Content */
   .message-content {
-    @apply max-w-xs lg:max-w-md px-4 py-3 rounded-lg;
+    @apply max-w-xs lg:max-w-md px-4 py-3 rounded-2xl animate-message-pop;
+  }
+
+  .message-bubble {
+    @apply rounded-2xl px-4 py-3 shadow-message transition-all duration-200;
   }
 
   .user-message {
-    @apply bg-blue-500 text-white rounded-bl-none ml-auto;
+    @apply bg-gradient-primary text-white rounded-br-none shadow-lg;
+  }
+
+  .user-message:hover {
+    @apply shadow-glow;
   }
 
   .bot-message {
-    @apply bg-gray-100 text-gray-900 rounded-tl-none;
+    @apply bg-white text-gray-900 rounded-bl-none border border-gray-200/50;
   }
 
+  .bot-message:hover {
+    @apply shadow-lg;
+  }
+
+  /* Message Timestamp */
+  .message-timestamp {
+    @apply text-xs opacity-70 mt-1;
+  }
+
+  /* Todo List */
+  .todo-list {
+    @apply space-y-2 mt-3;
+  }
+
+  .todo-item {
+    @apply flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-all duration-200;
+  }
+
+  .todo-item.completed {
+    @apply opacity-70;
+  }
+
+  .todo-checkbox {
+    @apply w-5 h-5 rounded-full border-2 border-primary cursor-pointer transition-all duration-200 flex items-center justify-center;
+  }
+
+  .todo-checkbox:hover {
+    @apply border-secondary shadow-glow;
+  }
+
+  .todo-checkbox.checked {
+    @apply bg-gradient-success border-success text-white;
+  }
+
+  .todo-text {
+    @apply flex-1 text-sm font-medium;
+  }
+
+  .todo-text.completed {
+    @apply line-through text-gray-500;
+  }
+
+  /* Input Area */
   .message-input-container {
-    @apply border-t border-gray-200 p-4 bg-white;
+    @apply border-t border-white/20 p-4 bg-white/50 backdrop-blur-sm;
   }
 
   .message-input {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none;
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-0 focus:border-primary resize-none transition-all duration-200 bg-white;
   }
 
+  .message-input::placeholder {
+    @apply text-gray-400;
+  }
+
+  .message-input:focus {
+    @apply shadow-glow;
+  }
+
+  .input-group {
+    @apply flex gap-2;
+  }
+
+  /* Send Button */
   .send-button {
-    @apply px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed mt-2;
+    @apply px-6 py-3 bg-gradient-primary text-white rounded-xl font-semibold hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2;
   }
 
+  .send-button:hover:not(:disabled) {
+    @apply transform -translate-y-0.5;
+  }
+
+  .send-button:active:not(:disabled) {
+    @apply transform translate-y-0;
+  }
+
+  /* Error Message */
   .error-message {
-    @apply bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start gap-3;
+    @apply bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-xl flex items-start gap-3 animate-slide-up shadow-lg;
   }
 
   .error-icon {
-    @apply text-red-600 text-xl flex-shrink-0;
+    @apply text-red-500 text-xl flex-shrink-0 animate-pulse-soft;
   }
 
+  .error-content {
+    @apply flex-1;
+  }
+
+  .error-title {
+    @apply font-semibold text-red-900;
+  }
+
+  .error-text {
+    @apply text-sm text-red-700 mt-1;
+  }
+
+  /* Retry Button */
+  .retry-button {
+    @apply px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm font-medium transition-all duration-200;
+  }
+
+  .retry-button:hover {
+    @apply shadow-lg transform -translate-y-0.5;
+  }
+
+  .dismiss-button {
+    @apply text-red-400 hover:text-red-600 transition-colors duration-200;
+  }
+
+  /* Loading Indicator */
   .loading-indicator {
-    @apply flex items-center gap-2 text-gray-600;
+    @apply flex items-center gap-3 text-gray-600;
+  }
+
+  .loading-text {
+    @apply text-sm font-medium;
   }
 
   .loading-dots {
-    @apply flex gap-1;
+    @apply flex gap-1.5;
   }
 
   .loading-dot {
-    @apply w-2 h-2 bg-gray-600 rounded-full animate-bounce;
+    @apply w-2 h-2 bg-gradient-primary rounded-full animate-bounce;
   }
 
+  .loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  /* Welcome Message */
   .welcome-message {
-    @apply flex items-center justify-center h-full text-gray-400 text-center p-8;
+    @apply flex flex-col items-center justify-center h-full text-center p-8 space-y-6;
   }
 
-  .retry-button {
-    @apply px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm ml-2;
+  .welcome-icon {
+    @apply text-6xl animate-bounce-slow;
+  }
+
+  .welcome-title {
+    @apply text-2xl font-bold text-gradient;
+  }
+
+  .welcome-subtitle {
+    @apply text-gray-600 text-sm;
+  }
+
+  .welcome-examples {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-3 mt-6;
+  }
+
+  .example-command {
+    @apply px-4 py-3 bg-indigo-50 border border-indigo-200 rounded-lg text-sm text-indigo-700 font-medium transition-all duration-200 hover:bg-indigo-100 hover:shadow-lg cursor-default;
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply bg-gray-200 rounded-lg animate-shimmer;
+    background-size: 1000px 100%;
+  }
+
+  .skeleton-text {
+    @apply h-4 bg-gray-200 rounded animate-pulse;
+  }
+
+  .skeleton-avatar {
+    @apply w-8 h-8 bg-gray-200 rounded-full animate-pulse;
+  }
+
+  /* Success Message */
+  .success-message {
+    @apply bg-green-50 border-2 border-green-200 text-green-800 px-4 py-3 rounded-xl animate-slide-up shadow-lg;
+  }
+
+  .success-icon {
+    @apply text-green-500 text-xl;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .message-content {
+      @apply max-w-full;
+    }
+
+    .message-list {
+      @apply p-4;
+    }
+
+    .chat-title {
+      @apply text-xl;
+    }
   }
 }
 
 @layer utilities {
-  .animate-fadeIn {
-    animation: fadeIn 0.3s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-bounce-slow {
-    animation: bounce 1s infinite;
-  }
-
+  /* Custom scrollbar */
   .scrollbar-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -116,10 +297,58 @@
     display: none;
   }
 
+  /* Text truncation */
   .truncate-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Glass effect variations */
+  .glass-sm {
+    @apply bg-white/5 backdrop-blur-sm border border-white/10;
+  }
+
+  .glass-md {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-lg {
+    @apply bg-white/15 backdrop-blur-lg border border-white/30;
+  }
+
+  /* Floating effect */
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  @keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Pulse glow */
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+    }
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-primary;
+  }
+
+  /* Focus ring utilities */
+  .focus-glow {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-white transition-all duration-200;
   }
 }

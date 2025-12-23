@@ -122,14 +122,14 @@ describe('Chat Components', () => {
 
     test('shows loading indicator when isLoading true', () => {
       render(<BotMessage text="Loading..." isLoading={true} />)
-      expect(screen.getByText(/typing/i)).toBeInTheDocument()
+      expect(screen.getByText(/Thinking/i)).toBeInTheDocument()
     })
   })
 
   describe('WelcomeMessage', () => {
     test('renders welcome message', () => {
       render(<WelcomeMessage />)
-      expect(screen.getByText(/Welcome!/i)).toBeInTheDocument()
+      expect(screen.getByText(/Todo Chatbot/i)).toBeInTheDocument()
       expect(screen.getByText(/add Buy groceries/i)).toBeInTheDocument()
     })
   })
@@ -137,7 +137,7 @@ describe('Chat Components', () => {
   describe('LoadingIndicator', () => {
     test('renders loading state', () => {
       render(<LoadingIndicator />)
-      expect(screen.getByText(/typing/i)).toBeInTheDocument()
+      expect(screen.getByText(/Thinking/i)).toBeInTheDocument()
     })
   })
 
