@@ -71,8 +71,8 @@ const MessageInput = ({ onSend, isLoading = false, isDisabled = false }) => {
           )}
         </button>
       </div>
-      <div className="text-xs text-gray-400 mt-2 text-right">
-        {message.length}/500 characters
+      <div className="text-xs text-gray-400 mt-2 text-right character-count">
+        {message.length}/500
       </div>
     </div>
   )

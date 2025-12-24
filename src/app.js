@@ -4,6 +4,7 @@ import logger from './utils/logger.js';
 import errorHandler from './middleware/error-handler.js';
 import loggingMiddleware from './middleware/logging.js';
 import routes from './routes.js';
+import corsMiddleware from './middleware/cors.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Custom middleware
+app.use(corsMiddleware);
 app.use(loggingMiddleware);
 
 // Health check endpoints (minimal, no dependencies)
@@ -71,7 +73,9 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Only start server if running directly (not imported in tests)
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isDirectRun = import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/')) ||
+                    process.argv[1].includes('app.js');
+if (isDirectRun) {
   startServer();
 }
 

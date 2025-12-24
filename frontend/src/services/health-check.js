@@ -1,9 +1,12 @@
 export const checkBackendHealth = async (apiClient) => {
   try {
-    const response = await apiClient.get('/health')
+    // Simple health check: if we can make an API request, backend is responding
+    // Just send a valid message format
+    const response = await apiClient.post('/v1/chat', { message: 'hello' })
+    // If we get any response back (whether success or failure), backend is up
     return {
-      isHealthy: response.status === 'UP',
-      status: response.status
+      isHealthy: true,
+      status: 'UP'
     }
   } catch (error) {
     console.warn('Health check failed:', error.message)

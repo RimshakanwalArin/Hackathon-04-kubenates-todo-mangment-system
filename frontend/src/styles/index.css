@@ -24,30 +24,29 @@
 @layer components {
   /* Chat Container */
   .chat-container {
-    /* @apply flex flex-col h-full bg-white/80 backdrop-blur-md rounded-2xl shadow-glass overflow-hidden border border-white/30; */
-    @apply flex flex-col h-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 backdrop-blur-md rounded-2xl shadow-glass overflow-hidden border border-white/30;
+    @apply flex flex-col h-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 backdrop-blur-md rounded-lg sm:rounded-xl lg:rounded-2xl shadow-md sm:shadow-lg lg:shadow-glass overflow-hidden border border-white/20 sm:border-white/30 p-2 sm:p-4 md:p-6;
   }
 
   /* Header */
   .chat-header {
-    @apply bg-gradient-to-r from-primary via-secondary to-accent p-6 text-white shadow-lg;
+    @apply bg-gradient-to-r from-primary via-secondary to-accent p-3 sm:p-4 md:p-6 text-white shadow-lg;
   }
 
   .chat-title {
-    @apply text-2xl font-bold flex items-center gap-3;
+    @apply text-base sm:text-xl md:text-3xl font-bold flex items-center gap-2 sm:gap-3;
   }
 
   .chat-title-emoji {
-    @apply text-3xl animate-bounce-slow;
+    @apply text-2xl sm:text-3xl md:text-4xl animate-bounce-slow;
   }
 
   /* Message List */
   .message-list {
-    @apply flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hidden;
+    @apply flex-1 overflow-y-auto p-2 sm:p-4 md:p-6 space-y-2 sm:space-y-4 scrollbar-hidden;
   }
 
   .message-item {
-    @apply flex gap-3 animate-slide-up;
+    @apply flex gap-2 sm:gap-3 animate-slide-up;
   }
 
   .message-item.user {
@@ -56,7 +55,7 @@
 
   /* Avatar */
   .message-avatar {
-    @apply w-8 h-8 rounded-full flex items-center justify-center text-lg flex-shrink-0;
+    @apply w-7 sm:w-8 h-7 sm:h-8 rounded-full flex items-center justify-center text-sm sm:text-base flex-shrink-0;
   }
 
   .message-avatar.bot {
@@ -69,11 +68,11 @@
 
   /* Message Content */
   .message-content {
-    @apply max-w-xs lg:max-w-md px-4 py-3 rounded-2xl animate-message-pop;
+    @apply max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl md:rounded-2xl animate-message-pop;
   }
 
   .message-bubble {
-    @apply rounded-2xl px-4 py-3 shadow-message transition-all duration-200;
+    @apply rounded-lg sm:rounded-xl md:rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-message transition-all duration-200;
   }
 
   .user-message {
@@ -94,16 +93,16 @@
 
   /* Message Timestamp */
   .message-timestamp {
-    @apply text-xs opacity-70 mt-1;
+    @apply text-xs opacity-70 mt-1 px-1;
   }
 
   /* Todo List */
   .todo-list {
-    @apply space-y-2 mt-3;
+    @apply space-y-2 sm:space-y-3 mt-3;
   }
 
   .todo-item {
-    @apply flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-all duration-200;
+    @apply flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 min-h-[44px];
   }
 
   .todo-item.completed {
@@ -111,7 +110,7 @@
   }
 
   .todo-checkbox {
-    @apply w-5 h-5 rounded-full border-2 border-primary cursor-pointer transition-all duration-200 flex items-center justify-center;
+    @apply w-5 h-5 rounded-full border-2 border-primary cursor-pointer transition-all duration-200 flex items-center justify-center flex-shrink-0;
   }
 
   .todo-checkbox:hover {
@@ -123,7 +122,7 @@
   }
 
   .todo-text {
-    @apply flex-1 text-sm font-medium;
+    @apply flex-1 text-xs sm:text-sm font-medium break-words;
   }
 
   .todo-text.completed {
@@ -132,15 +131,15 @@
 
   /* Input Area */
   .message-input-container {
-    @apply border-t border-white/20 p-4 bg-white/50 backdrop-blur-sm;
+    @apply border-t border-white/20 p-2 sm:p-4 bg-white/50 backdrop-blur-sm;
   }
 
   .message-input {
-    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-0 focus:border-primary resize-none transition-all duration-200 bg-white;
+    @apply w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-0 focus:border-primary resize-none transition-all duration-200 bg-white text-sm sm:text-base;
   }
 
   .message-input::placeholder {
-    @apply text-gray-400;
+    @apply text-gray-400 text-xs sm:text-sm;
   }
 
   .message-input:focus {
@@ -148,12 +147,12 @@
   }
 
   .input-group {
-    @apply flex gap-2;
+    @apply flex gap-2 sm:gap-3;
   }
 
   /* Send Button */
   .send-button {
-    @apply px-6 py-3 bg-gradient-primary text-white rounded-xl font-semibold hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2;
+    @apply px-3 sm:px-6 py-2 sm:py-3 bg-gradient-primary text-white rounded-lg sm:rounded-xl font-semibold hover:shadow-glow disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-1 sm:gap-2 min-h-[44px] text-xs sm:text-base flex-shrink-0;
   }
 
   .send-button:hover:not(:disabled) {
@@ -166,11 +165,11 @@
 
   /* Error Message */
   .error-message {
-    @apply bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-xl flex items-start gap-3 animate-slide-up shadow-lg;
+    @apply bg-red-50 border-2 border-red-200 text-red-800 px-3 sm:px-4 py-3 rounded-lg sm:rounded-xl flex items-start gap-2 sm:gap-3 animate-slide-up shadow-lg mx-2 sm:mx-0;
   }
 
   .error-icon {
-    @apply text-red-500 text-xl flex-shrink-0 animate-pulse-soft;
+    @apply text-red-500 text-lg sm:text-xl flex-shrink-0 animate-pulse-soft mt-0.5;
   }
 
   .error-content {
@@ -178,16 +177,16 @@
   }
 
   .error-title {
-    @apply font-semibold text-red-900;
+    @apply font-semibold text-red-900 text-sm sm:text-base;
   }
 
   .error-text {
-    @apply text-sm text-red-700 mt-1;
+    @apply text-xs sm:text-sm text-red-700 mt-1;
   }
 
   /* Retry Button */
   .retry-button {
-    @apply px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm font-medium transition-all duration-200;
+    @apply px-3 sm:px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-xs sm:text-sm font-medium transition-all duration-200 min-h-[36px];
   }
 
   .retry-button:hover {
@@ -195,20 +194,20 @@
   }
 
   .dismiss-button {
-    @apply text-red-400 hover:text-red-600 transition-colors duration-200;
+    @apply text-red-400 hover:text-red-600 transition-colors duration-200 text-lg;
   }
 
   /* Loading Indicator */
   .loading-indicator {
-    @apply flex items-center gap-3 text-gray-600;
+    @apply flex items-center gap-2 sm:gap-3 text-gray-600;
   }
 
   .loading-text {
-    @apply text-sm font-medium;
+    @apply text-xs sm:text-base font-medium;
   }
 
   .loading-dots {
-    @apply flex gap-1.5;
+    @apply flex gap-1 sm:gap-2;
   }
 
   .loading-dot {
@@ -225,27 +224,27 @@
 
   /* Welcome Message */
   .welcome-message {
-    @apply flex flex-col items-center justify-center h-full text-center p-8 space-y-6;
+    @apply flex flex-col items-center justify-center h-full text-center p-4 sm:p-8 space-y-4 sm:space-y-6;
   }
 
   .welcome-icon {
-    @apply text-6xl animate-bounce-slow;
+    @apply text-4xl sm:text-6xl animate-bounce-slow;
   }
 
   .welcome-title {
-    @apply text-2xl font-bold text-gradient;
+    @apply text-lg sm:text-2xl font-bold text-gradient;
   }
 
   .welcome-subtitle {
-    @apply text-gray-600 text-sm;
+    @apply text-gray-600 text-xs sm:text-sm;
   }
 
   .welcome-examples {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-3 mt-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-4 sm:mt-6 w-full px-2;
   }
 
   .example-command {
-    @apply px-4 py-3 bg-indigo-50 border border-indigo-200 rounded-lg text-sm text-indigo-700 font-medium transition-all duration-200 hover:bg-indigo-100 hover:shadow-lg cursor-default;
+    @apply px-3 sm:px-4 py-2 sm:py-3 bg-indigo-50 border border-indigo-200 rounded-lg text-xs sm:text-sm text-indigo-700 font-medium transition-all duration-200 hover:bg-indigo-100 hover:shadow-lg cursor-default;
   }
 
   /* Skeleton Loading */
@@ -272,17 +271,33 @@
   }
 
   /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .message-content {
+      @apply max-w-[85vw];
+    }
+
+    .error-message {
+      @apply text-xs;
+    }
+
+    .character-count {
+      @apply text-xs;
+    }
+  }
+
   @media (max-width: 640px) {
     .message-content {
-      @apply max-w-full;
+      @apply max-w-[90vw];
     }
 
-    .message-list {
-      @apply p-4;
+    .welcome-examples {
+      @apply grid-cols-1;
     }
+  }
 
-    .chat-title {
-      @apply text-xl;
+  @media (min-width: 1024px) {
+    .message-content {
+      @apply max-w-3xl;
     }
   }
 }
