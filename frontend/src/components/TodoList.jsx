@@ -30,10 +30,19 @@ const TodoList = ({ todos = [] }) => {
           >
             {todo.completed && <span className="text-white text-sm">✓</span>}
           </div>
-          <span className={`todo-text ${todo.completed ? 'completed' : ''}`}>
-            {todo.title || 'Untitled'}
-          </span>
-          {todo.completed && <span className="text-xs text-green-500 ml-2">Done</span>}
+          <div className="flex-1">
+            <div>
+              <span className={`todo-text ${todo.completed ? 'completed' : ''}`}>
+                {todo.title || 'Untitled'}
+              </span>
+              {todo.completed && <span className="text-xs text-green-500 ml-2">Done</span>}
+            </div>
+            {todo.id && (
+              <div className="mt-2 p-2 bg-gray-100 rounded text-xs font-mono text-gray-700 break-all">
+                {todo.id}
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>

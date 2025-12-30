@@ -37,7 +37,8 @@ export const formatTodoList = (todos) => {
     .map((todo, index) => {
       const status = todo.completed ? '✓' : '○'
       const title = todo.title || 'Untitled'
-      return `${status} ${index + 1}. ${title}`
+      const id = todo.id ? `\n   ID: ${todo.id}` : ''
+      return `${status} ${index + 1}. ${title}${id}`
     })
     .join('\n')
 
@@ -66,7 +67,8 @@ export const parseChatResponse = (response) => {
       formatted.todos = response.result
       formatted.text = formatTodoList(response.result)
     } else if (response.result.title) {
-      formatted.text = `✓ Added: "${response.result.title}"`
+      const idText = response.result.id ? `\nID: ${response.result.id}` : ''
+      formatted.text = `✓ Added: "${response.result.title}"${idText}`
     } else if (response.result.completed !== undefined) {
       formatted.text = `✓ Updated successfully`
     } else {
