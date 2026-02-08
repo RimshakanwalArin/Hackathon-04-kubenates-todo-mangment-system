@@ -1,0 +1,11 @@
+{
+  "orchestration": "Kubernetes",
+  "containerization": "Docker",
+  "components": [
+    "frontend-deployment",
+    "backend-deployment",
+    "db-service"
+  ],
+  "monitoring_ready": true,
+  "config_files": ["*.yaml", "*.yml", "Dockerfile"]
+}
